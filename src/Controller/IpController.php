@@ -111,6 +111,7 @@ class IpController
     // 导入接口
     public function doImportAction($file, Application $app)
     {
+        header('Content-Type:text/html; charset=utf-8');
         set_time_limit(0);
         $filename = realpath(__DIR__ . '/../../data/') . '/' . $file;
         if (!file_exists($filename)) {
