@@ -44,10 +44,6 @@ EOF
         $start = $input->getArgument('start');
         $end = $input->getArgument('end');
 
-        echo $province;
-        echo $start;
-        echo $end;
-
         for ($i = $start; $i <= $end; $i++) {
             $data = $source->crawler(sprintf('%sICP证%0' . strlen($start) . 'd号', $province, $i));
             if ($data) {
