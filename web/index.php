@@ -19,5 +19,6 @@ $app->get('/', 'Controller\\IpController::indexAction');
 $app->get('/query', 'Controller\\IpController::queryAction');
 $app->get('/import', 'Controller\\IpController::importAction');
 $app->post('/upload', 'Controller\\IpController::uploadAction');
+$app->get('/do-import/{file}', 'Controller\\IpController::doImportAction');
 
 $app->run();

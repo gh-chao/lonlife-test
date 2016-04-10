@@ -47,7 +47,6 @@ class IpController
 
         $number = $this->ip2number($ip);
 
-        // ip段转掩码
         if ($mask) {
             $proper_address = bcadd(pow(2, 32 - $mask), sprintf("%u", ip2long($ip))) - 2;
             $number_right   = $this->ip2number(long2ip($proper_address));
@@ -65,7 +64,7 @@ class IpController
         if ($result) {
             return JsonResponse::create([
                 'status'  => 0,
-                'message' => $result['address'],
+                'message' => base64_decode($result['address']),
             ]);
         } else {
             return JsonResponse::create([
@@ -85,9 +84,8 @@ class IpController
     }
 
     // 上传接口
-    public function uploadAction(Request $request, Application $app)
+    public function uploadAction(Request $request)
     {
-        set_time_limit(0);
         /** @var UploadedFile $file */
         $file = $request->files->get('file');
 
@@ -95,8 +93,37 @@ class IpController
             return JsonResponse::create(['status' => -1, 'message' => '上传失败']);
         }
 
-        $fp = fopen($file->getRealPath(), 'r');
+        $fp = fopen($file->getRealPath(), "rb");
+        $bin = fread($fp, 2);
+        fclose($fp);
+        $strInfo = @unpack("C2chars", $bin);
+        $typeCode = intval($strInfo['chars1'].$strInfo['chars2']);
+        if ($typeCode != 239187) {
+            return JsonResponse::create(['status' => -1, 'message' => '文件类型错误, 请上传UTF-8编码的文本文档']);
+        }
 
+        $save = md5($file->getRealPath());
+        $file->move(realpath(__DIR__ . '/../../data/'), $save);
+
+        return JsonResponse::create(['status' => 0, 'save' => $save]);
+    }
+
+    // 导入接口
+    public function doImportAction($file, Application $app)
+    {
+        set_time_limit(0);
+        $filename = realpath(__DIR__ . '/../../data/') . '/' . $file;
+        if (!file_exists($filename)) {
+            return '文件不存在';
+        }
+        $fp = fopen($filename, 'r');
+
+        if (!$fp) {
+            return '导入失败： 007';
+        }
+        printf("<span style='color: red'>导入过程请勿关闭浏览器</span><br/>\n");
+        $n = 0;
+        $begin_time = time();
         while ($line = fgets($fp)) {
             $columns = preg_split('/\s+/', $line, 3);
             if (count($columns) != 3) {
@@ -104,19 +131,22 @@ class IpController
             }
             $ip_left = $this->ip2number($columns[0]);
             $ip_right = $this->ip2number($columns[1]);
-            $app['mongo_collection']->save(
-                array(
-                    '_id'       => md5($ip_left.$ip_right),
-                    'ip_left'  => $ip_left,
-                    'ip_right' => $ip_right,
-                    'address'  => trim($columns[2]),
-                )
-            );
+
+            $app['mongo_collection']->save(array(
+                '_id'      => $ip_left . $ip_right,
+                'ip_left'  => $ip_left,
+                'ip_right' => $ip_right,
+                'address'  => base64_encode(trim($columns[2])),
+            ));
+            $n++;
+            if ($n % 5000 == 0) {
+                printf("已导入： %d<br/>\n", $n);
+                ob_flush();
+            }
         }
 
         fclose($fp);
-
-        return JsonResponse::create(['status' => 0]);
+        return  sprintf("<span style='color: green'>导入成功，共导入： %d条数据, 用时 %d秒</span><br/>\n", $n, time()-$begin_time);
     }
 
     // ip转为数字
