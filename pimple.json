@@ -185,7 +185,7 @@
     {
         "name": "twig.path",
         "type": "string",
-        "value": "\/Users\/leo\/workspace\/lonlife-test\/web\/..\/src\/Resource\/views"
+        "value": "\/home\/lilocon\/share\/lonlife-test\/web\/..\/src\/Resource\/views"
     },
     {
         "name": "twig.templates",

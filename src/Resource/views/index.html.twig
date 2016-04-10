@@ -11,6 +11,7 @@
 {% endblock stylesheets %}
 
 {% block javascripts %}
+    {{ parent() }}
     <script type="text/javascript">
         $("#home_index_input_ciphertext").keyup(function (event) {
             if (event.keyCode == 13) {
@@ -53,19 +54,19 @@
         <div class="jumbotron">
             <form id="home_index_form_query" action="/query" method="get" class="form">
                 <div class="form-group h30">
-                    查询类型
-                    <div class="btn-group" data-toggle="buttons">
-                        <label class="btn btn-primary btn-xs active">
-                            <input type="radio" name="type" value="ip" checked> IP
-                        </label>
-                        <label class="btn btn-success btn-xs">
-                            <input type="radio" name="type" value="mask"> 掩码
-                        </label>
-                    </div>
+                    已收录{{ count }}条数据
+                    {#<div class="btn-group" data-toggle="buttons">#}
+                        {#<label class="btn btn-primary btn-xs active">#}
+                            {#<input type="radio" name="type" value="ip" checked> IP#}
+                        {#</label>#}
+                        {#<label class="btn btn-success btn-xs">#}
+                            {#<input type="radio" name="type" value="mask"> 掩码#}
+                        {#</label>#}
+                    {#</div>#}
                 </div>
 
                 <div class="input-group">
-                    <input placeholder="请在这里输入内容查询" id="home_index_input_ciphertext" type="text" name="cipher"
+                    <input placeholder="请在这里输入IP或掩码查询" id="home_index_input_ciphertext" type="text" name="cipher"
                            class="form-control" style="letter-spacing: 2px;font-weight: 300">
                 <span class="input-group-btn">
                     <button id="home_index_btn_query" class="btn btn-primary" type="submit">
