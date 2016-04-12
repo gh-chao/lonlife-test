@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>{% block title %}IP库{% endblock title %}</title>
+    {% block stylesheets %}
+        <link href="/assets/css/bootstrap.css" rel="stylesheet"/>
+        <link href="/assets/css/flatui.css" rel="stylesheet"/>
+        <link href="/assets/css/style.css" rel="stylesheet"/>
+        <link href="/assets/css/jquery.marquee.min.css" rel="stylesheet"/>
+    {% endblock stylesheets %}
+</head>
+<body>
+{% block body %}
+{% block nav %}
+    <nav class="navbar navbar-inverse" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">IP库</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">IP库</a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="{% if app.request.requesturi == '/' %}active {% endif %}first">
+                        <a href="/">
+                            <i class="glyphicon glyphicon-home"></i>
+                            首页
+                        </a>
+                    </li>
+                    <li{% if app.request.requesturi == '/import' %} class="active" {% endif %}>
+                        <a href="/import">
+                            <i class="glyphicon glyphicon-import"></i>
+                            提交
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+{% endblock nav %}
+{% block content %}{% endblock content %}
+{% block footer %}
+<footer class="footer ">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6 col-lg-6">
+                <p>
+                    数据来自纯真数据库
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+{% endblock footer %}
+{% endblock body %}
+{% block javascripts %}
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script type="text/javascript" src="/assets/bootstrap/dist/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/assets/js/jquery.alert.js"></script>
+<script type="text/javascript" src="/assets/js/jquery.form.js"></script>
+{% endblock javascripts %}
+</body>
+</html>
