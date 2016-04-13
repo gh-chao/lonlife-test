@@ -2,80 +2,66 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <style type="text/css">
-        .h30 {
-            height: 30px;
-            line-height: 30px;
-        }
-    </style>
 {% endblock stylesheets %}
 
 {% block javascripts %}
+    {{ parent() }}
+    <script src="/assets/pupload/plupload.full.min.js"></script>
+    <script>
+        var uploader = new plupload.Uploader({
+            runtimes : 'html5',
+            browse_button : 'upload',
+            url : '/upload',
+            filters : {
+                max_file_size : '100mb'
+            },
+            init: {
+                FilesAdded: function(up, files) {
+                    uploader.start();
+                    $("#progress").show();
+                    $("#home_index_div_dialog").empty();
+                },
+                UploadProgress: function(up, file) {
+                    console.log(file);
+                    $("#progress_bar").css({width: file.percent + "%"});
 
-    <script type="text/javascript">
-        $("#home_index_input_ciphertext").keyup(function (event) {
-            if (event.keyCode == 13) {
-                return false;
+                },
+                Error: function(up, err) {
+                    $("#progress").hide();
+                    $.alert({
+                        ctx: $("#home_index_div_dialog"),
+                        msg: err.message,
+                        style: 'warning',
+                        autoclose: false
+                    });
+                },
+                FileUploaded: function(up, file, info) {
+                    setTimeout(function(){
+                        $("#progress").hide();
+                    }, 1000);
+                    console.log(up);
+                    console.log(file);
+                    console.log(info);
+                }
             }
-            $("#home_index_div_dialog").empty();
         });
-
-        $("#home_index_form_query").submit(function () {
-            var input = $("#home_index_input_ciphertext");
-            var form = $("#home_index_form_query");
-            var dialog = $("#home_index_div_dialog");
-            var autoclose = false;
-
-            if (input.val() == "") {
-                $.alert({ctx: dialog, msg: "请填写查询内容", style: "warning"});
-                input.focus();
-                return false;
-            }
-
-            form.ajaxSubmit(function (ret) {
-                var style = "success",
-                        msg = ret.message;
-
-                $.alert({
-                    ctx: dialog,
-                    msg: msg,
-                    style: style,
-                    autoclose: autoclose
-                });
-            });
-
-            return false;
-        });
+        uploader.init();
     </script>
 {% endblock javascripts %}
 
 {% block content %}
     <div class="container">
         <div class="jumbotron">
-            <form id="home_index_form_query" action="/query" method="get" class="form">
-                <div class="form-group h30">
-                    查询类型
-                    <div class="btn-group" data-toggle="buttons">
-                        <label class="btn btn-primary btn-xs active">
-                            <input type="radio" name="type" value="ip" checked> IP
-                        </label>
-                        <label class="btn btn-success btn-xs">
-                            <input type="radio" name="type" value="mask"> 掩码
-                        </label>
-                    </div>
-                </div>
-
-                <div class="input-group">
-                    <input placeholder="请在这里输入内容查询" id="home_index_input_ciphertext" type="text" name="cipher"
-                           class="form-control" style="letter-spacing: 2px;font-weight: 300">
-                <span class="input-group-btn">
-                    <button id="home_index_btn_query" class="btn btn-primary" type="submit">
-                        <span class="glyphicon glyphicon-search"></span>
-                    </button>
-                </span>
-                </div>
-            </form>
+            <div class="form-group">
+                请上传文件
+            </div>
+            <button id="upload" class="btn btn-primary" type="button">
+                上传
+            </button>
             <hr>
+            <div id="progress" class="progress" style="display: none;">
+                <div id="progress_bar" class="progress-bar" style="width: 60%;"></div>
+            </div>
             <div id="home_index_div_dialog"></div>
         </div>
     </div>
