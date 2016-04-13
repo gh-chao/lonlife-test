@@ -2,6 +2,8 @@
 
 namespace Command;
 
+use Command\Source\Chinaz;
+use GuzzleHttp\Client;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -32,7 +34,8 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('-----');
+        $source = new Chinaz(new Client());
+        $source->crawler('');
     }
 
 }

@@ -110,69 +110,6 @@
         "value": "en"
     },
     {
-        "name": "db.default_options",
-        "type": "array",
-        "value": ""
-    },
-    {
-        "name": "dbs.options.initializer",
-        "type": "closure",
-        "value": ""
-    },
-    {
-        "name": "dbs",
-        "type": "container",
-        "value": [
-            {
-                "name": "default",
-                "type": "class",
-                "value": "Doctrine\\DBAL\\Connection"
-            }
-        ]
-    },
-    {
-        "name": "dbs.config",
-        "type": "container",
-        "value": [
-            {
-                "name": "default",
-                "type": "class",
-                "value": "Doctrine\\DBAL\\Configuration"
-            }
-        ]
-    },
-    {
-        "name": "dbs.event_manager",
-        "type": "container",
-        "value": [
-            {
-                "name": "default",
-                "type": "class",
-                "value": "Doctrine\\Common\\EventManager"
-            }
-        ]
-    },
-    {
-        "name": "db",
-        "type": "class",
-        "value": "Doctrine\\DBAL\\Connection"
-    },
-    {
-        "name": "db.config",
-        "type": "class",
-        "value": "Doctrine\\DBAL\\Configuration"
-    },
-    {
-        "name": "db.event_manager",
-        "type": "class",
-        "value": "Doctrine\\Common\\EventManager"
-    },
-    {
-        "name": "db.options",
-        "type": "array",
-        "value": ""
-    },
-    {
         "name": "twig.options",
         "type": "array",
         "value": ""
@@ -185,7 +122,7 @@
     {
         "name": "twig.path",
         "type": "string",
-        "value": "\/home\/lilocon\/share\/lonlife-test\/web\/..\/src\/Resource\/views"
+        "value": "\/Users\/leo\/workspace\/lonlife-test\/web\/..\/src\/Resource\/views"
     },
     {
         "name": "twig.templates",
@@ -213,13 +150,8 @@
         "value": "Twig_Loader_Chain"
     },
     {
-        "name": "dbs.options",
-        "type": "array",
-        "value": ""
-    },
-    {
-        "name": "dbs.default",
-        "type": "string",
-        "value": "default"
+        "name": "mongo_collection",
+        "type": "class",
+        "value": "MongoCollection"
     }
 ]

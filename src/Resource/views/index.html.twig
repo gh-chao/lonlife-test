@@ -33,13 +33,12 @@
             }
 
             form.ajaxSubmit(function (ret) {
-                var style = "success",
-                        msg = ret.message;
+                var style = "success", msg = ret.message;
 
                 $.alert({
                     ctx: dialog,
                     msg: msg,
-                    style: style,
+                    style: ret.status==0 ? 'success' : 'warning',
                     autoclose: autoclose
                 });
             });
@@ -66,7 +65,7 @@
                 </div>
 
                 <div class="input-group">
-                    <input placeholder="请在这里输入IP或掩码查询" id="home_index_input_ciphertext" type="text" name="cipher"
+                    <input placeholder="请在这里输入IP或掩码查询" id="home_index_input_ciphertext" type="text" name="ip"
                            class="form-control" style="letter-spacing: 2px;font-weight: 300">
                 <span class="input-group-btn">
                     <button id="home_index_btn_query" class="btn btn-primary" type="submit">
